@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - MiSitio</title>
+    <!-- Incluimos Tailwind CSS para un diseño moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Configuracion de fuente global y colores base */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --background: #f8f8ff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            min-height: 100vh;
+            padding-bottom: 40px; /* Espacio para el footer fijo */
+        }
+
+        /* Estilo para el modal (por defecto oculto) */
+        #loginModal {
+            display: none; /* Controlado por JS */
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Estilo para el contenedor de mensajes (feedback) */
+        #feedbackContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 110;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'indigo-700': '#4338ca',
+                        'indigo-600': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-gray-800">
+
+    <!-- 1. Barra de Navegación (Header) -->
+    <nav class="bg-white shadow-lg p-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-6">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition duration-150">MiSitio</a>
+            <div class="hidden sm:flex space-x-4">
+                <a href="index.html" class="nav-link text-gray-600 hover:text-indigo-600 transition duration-150">Home</a>
+                <a href="about.html" class="nav-link text-indigo-600 font-semibold border-b-2 border-indigo-600">About Us</a>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+           
+            <button id="loginBtn" class="p-2 rounded-full bg-indigo-600 text-white shadow-md hover:bg-indigo-700 transition duration-150 transform hover:scale-105" title="Login">
+                <span class="text-lg">🔒</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 2. Contenido Principal -->
+    <main class="container mx-auto p-6 md:p-12">
+        <section id="about" class="bg-white p-8 rounded-xl shadow-2xl">
+            <h1 class="text-4xl font-extrabold mb-4 text-indigo-700">About Us</h1>
+            <p class="text-lg mb-3">Somos un equipo dedicado a crear soluciones web simples y efectivas.</p>
+            <p class="text-base text-gray-600">Esta es una página de ejemplo para la sección "About Us" donde demostramos una integración de modal de login con autenticación local.</p>
+            <div class="mt-6 p-4 border-l-4 border-indigo-500 bg-indigo-50 text-indigo-700 rounded-lg">
+                <p class="font-semibold">Estado del Login:</p>
+                <p>Presiona el icono 🔒 para iniciar sesión. Se usa la lista de usuarios predefinida.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 3. Modal de Login -->
+    <div id="loginModal" class="flex justify-center items-center">
+        <div class="bg-white w-full max-w-md p-6 rounded-xl shadow-2xl animate-fade-in-up">
+            <div class="flex justify-between items-center mb-4 border-b pb-3">
+                <h2 class="text-2xl font-bold text-indigo-700">Iniciar Sesión</h2>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-3xl leading-none transition duration-150">&times;</button>
+            </div>
+            
+            <form id="formLogin">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Usuario (cuenta)</label>
+                    <input type="text" id="username" name="username" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" 
+                           placeholder="pon tu usuario">
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" id="password" name="password" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" 
+                           placeholder="********">
+                </div>
+                <button type="submit" 
+                        class="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 transform hover:scale-[1.01]">
+                    Acceder
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. Contenedor de Mensajes (Feedback/Alert replacement) -->
+    <div id="feedbackContainer" class="space-y-2">
+        <!-- Los mensajes se insertarán aquí dinámicamente -->
+    </div>
+    
+    <!-- 5. Pie de Página (Footer) -->
+    <footer class="fixed bottom-0 w-full bg-gray-100 border-t p-2 text-center text-sm text-gray-600 shadow-inner">
+        Usuario actual: <span id="footerUserName" class="font-semibold text-indigo-600">Invitado</span>
+    </footer>
+
+    <!-- 6. Script de Lógica -->
+    <script>
+        // --- Lista de Usuarios para Autenticación Local ---
+        const USERS = [
+            {"cuenta": "alexis", "contraseña": "contraseña"},
+            {"cuenta": "hernesto", "contraseña": "1234"},
+            {"cuenta": "montgomery", "contraseña": "5678"},
+            {"cuenta": "roberto", "contraseña": "9101"},
+            {"cuenta": "darwin", "contraseña": "1121"},
+            {"cuenta": "finn", "contraseña": "3141"}
+        ];
+        
+        // --- Feedback Message System (Replaces alert()) ---
+        const feedbackContainer = document.getElementById('feedbackContainer');
+
+        function showFeedback(message, type = 'success') {
+            // Mapping types to Tailwind classes
+            let bgColor, borderColor, icon;
+            switch (type) {
+                case 'error':
+                    bgColor = 'bg-red-100';
+                    borderColor = 'border-red-400';
+                    icon = '❌';
+                    break;
+                case 'warning':
+                    bgColor = 'bg-yellow-100';
+                    borderColor = 'border-yellow-400';
+                    icon = '⚠️';
+                    break;
+                case 'info':
+                    bgColor = 'bg-blue-100';
+                    borderColor = 'border-blue-400';
+                    icon = '💡';
+                    break;
+                case 'success':
+                default:
+                    bgColor = 'bg-green-100';
+                    borderColor = 'border-green-400';
+                    icon = '✅';
+                    break;
+            }
+
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = `${bgColor} border-l-4 ${borderColor} text-gray-700 p-4 rounded-lg shadow-lg w-72 transition-all duration-300 transform translate-x-0 opacity-100`;
+            feedbackDiv.innerHTML = `<div class="flex items-center"><span class="mr-2">${icon}</span> ${message}</div>`;
+
+            feedbackContainer.prepend(feedbackDiv); // Add to the top
+
+            // Automatically remove after 5 seconds
+            setTimeout(() => {
+                feedbackDiv.classList.add('opacity-0', 'translate-x-full');
+                // Wait for the transition to finish before removing from DOM
+                setTimeout(() => feedbackDiv.remove(), 300);
+            }, 5000);
+        }
+
+        // --- Manejo de la lógica del Login ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginModal = document.getElementById('loginModal');
+            const closeModal = document.getElementById('closeModal');
+            const form = document.getElementById("formLogin");
+            
+            // --- FUNCIONALIDAD 1: API Check - ELIMINADA y SUSTITUIDA POR LÓGICA LOCAL ---
+
+           
+
+            // --- FUNCIONALIDAD 2: Manejo del Modal de Login ---
+            if (loginBtn && loginModal && closeModal) {
+                loginBtn.onclick = function() {
+                    loginModal.style.display = 'flex'; // Usamos 'flex' para centrar
+                };
+                closeModal.onclick = function() {
+                    loginModal.style.display = 'none';
+                };
+                window.onclick = function(event) {
+                    if (event.target === loginModal) {
+                        loginModal.style.display = 'none';
+                    }
+                };
+            }
+
+            // --- FUNCIONALIDAD 3: Manejo del Formulario de Login (Autenticación Local) ---
+            if (form) {
+                form.addEventListener("submit", (e) => {
+                    e.preventDefault(); // evita que la página se recargue
+
+                    const login = document.getElementById("username").value;
+                    const contrasena = document.getElementById("password").value;
+
+                    // Buscar el usuario en el array local (USERS)
+                    const userFound = USERS.find(user => 
+                        user.cuenta === login && user["contraseña"] === contrasena
+                    );
+
+                    if (userFound) {
+                        const cuenta = userFound.cuenta;
+                        
+                        showFeedback("Acceso permitido: " + cuenta, 'success');
+                        console.log("Usuario autenticado:", userFound);
+                        
+                        // 1. Actualizar nombre en la barra de navegación
+                        const userNameSpan = document.getElementById('userName');
+                        if (userNameSpan) userNameSpan.textContent = cuenta;
+                        
+                        // 2. Actualizar nombre en el footer
+                        const footerUserNameSpan = document.getElementById('footerUserName');
+                        if (footerUserNameSpan) footerUserNameSpan.textContent = cuenta;
+                        
+                        // 3. Cerrar modal
+                        loginModal.style.display = 'none';
+
+                        // Limpiar campos
+                        document.getElementById("username").value = "";
+                        document.getElementById("password").value = "";
+
+                    } else {
+                        // Usuario no encontrado o contraseña incorrecta
+                        showFeedback('Error de autenticación. Usuario o contraseña incorrectos.', 'error');
+                        
+                        // limpiar los campos del formulario tras error
+                        document.getElementById("username").value = "";
+                        document.getElementById("password").value = "";
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

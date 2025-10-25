@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../modelo"
+		},
+		{
+			"path": "../node_modules"
+		},
+		{
+			"path": "../routes"
+		}
+	]
+}
