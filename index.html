@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Inicio - MiSitio</title>
+  <link rel="stylesheet" href="estilos.css">
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-logo">MiSitio</a>
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About Us</a>
+    </div>
+    <div class="nav-right">
+      <span id="userName" class="user-name"></span>
+      <button id="loginBtn" class="icon-btn" title="Login">
+        <span class="login-icon">🔒</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <main>
+    <section id="home">
+      <h1>Bienvenido a MiSitio - Tu Portal Web</h1>
+      <p>
+        Descubre una experiencia digital moderna y funcional diseñada para facilitar 
+        tu navegación. Nuestro sitio ofrece una interfaz intuitiva con sistema de 
+        autenticación seguro y diseño responsive adaptable a cualquier dispositivo.
+      </p>
+      <p>
+        Explora las diferentes secciones a través del menú de navegación superior. 
+        Puedes iniciar sesión haciendo clic en el ícono de candado para acceder a 
+        funcionalidades personalizadas y mantener tu sesión activa durante tu visita.
+      </p>
+      <p>
+        Este proyecto combina HTML5, CSS3 y JavaScript moderno para crear una 
+        experiencia web fluida y atractiva. Las notificaciones interactivas te 
+        mantendrán informado de cada acción realizada en el sistema.
+      </p>
+    </section>
+  </main>
+
+  <!-- Modal de Login -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span id="closeBtn" class="close">&times;</span>
+      <h2>Iniciar Sesión</h2>
+      <form id="formLogin">
+        <input type="text" id="username" name="username" placeholder="Usuario" required>
+        <input type="password" id="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <p><strong>Claude (Asistente de IA)</strong></p>
+      <p>Alvaro alexis acosta villalpando</p>
+      <p>21 de octubre de 2025</p>
+    </div>
+  </footer>
+
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Script principal -->
+  <script src="app.js"></script>
+</body>
+</html>
